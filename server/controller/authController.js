@@ -1,7 +1,9 @@
 'use strict'
 
 let mongoose = require('mongoose'),
-    User = mongoose.model('User')
+    User = mongoose.model('User'),
+    jwt = require('jwt-simple'),
+    cfg = require('../config')
 
 
 exports.login = (req, res) => {
@@ -14,7 +16,11 @@ exports.login = (req, res) => {
                     res.status(401).send("Wrong password")
                 } else {
                     //TODO: Jwt token
-                    res.json(user)
+                    let payload = {
+                        _id: user._id,
+                    }
+                    let token = jwt.encode(payload, cfg.jwtSecret)
+                    res.json({token: token})
                 }
             }
         })
@@ -38,4 +44,11 @@ exports.register = (req, res) => {
     } else {
         res.status(400).send("No params in request body")
     }
+}
+
+exports.profile = (req, res) => {
+
+    console.log()
+    res.json({msg: "DUPA"})
+
 }

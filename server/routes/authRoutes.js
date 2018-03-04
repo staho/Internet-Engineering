@@ -1,6 +1,6 @@
 'use strict'
 
-module.exports = app => {
+module.exports = (app, authenticate) => {
     let auth = require('../controller/authController')
 
     app.route('/login')
@@ -8,4 +8,7 @@ module.exports = app => {
     
     app.route('/register')
         .post(auth.register)
+
+    app.route('/profile')
+        .get(authenticate(), auth.profile)
 }

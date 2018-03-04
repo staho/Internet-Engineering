@@ -3,16 +3,19 @@ let express = require("express"),
     User = require('./model/UserModel'),
     bodyParser = require('body-parser'),
     app = express(),
-    port = process.env.port || 3000
+    port = process.env.port || 3000,
+    auth = require('./auth')()
 
 mongoose.Promise = global.Promise
 mongoose.connect('mongodb://localhost:27017/test')
+
+app.use(auth.initialize())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 
 let routes = require('./routes/authRoutes')
-routes(app)
+routes(app, auth.authenticate)
 
 app.listen(port)
 
