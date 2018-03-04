@@ -47,8 +47,10 @@ exports.register = (req, res) => {
 }
 
 exports.profile = (req, res) => {
-
-    console.log()
-    res.json({msg: "DUPA"})
+    let user = req.user
+    user['password'] = undefined
+    // delete user.password
+    console.log(user.password)
+    res.json(user)
 
 }

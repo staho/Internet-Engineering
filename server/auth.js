@@ -11,10 +11,10 @@ let passport = require('passport'),
     }
 
 module.exports = () => {
-    console.log("TUTAJ")    
+    // console.log("TUTAJ")    
     let strategy = new Strategy(params, (payload, done) => {
         console.log(payload)
-        User.findOne({_id: payload._id}, (err, user) => {
+        User.findById(payload._id, (err, user) => {
             if (err) {
                 return done(new Error("User not found"), null);
             }
@@ -25,24 +25,17 @@ module.exports = () => {
                 // or you could create a new account
             }
         })
-        // if (user) {
-        //     return done(null, {
-        //         _id: user._id
-        //     })
-        // } else {
-        //     return done()
-        // }
     })
 
     passport.use(strategy)
 
     return {
         initialize: () => {
-            console.log("initializing")
+            // console.log("initializing")
             return passport.initialize()
         },
         authenticate: () => {
-            console.log("Authenticating")
+            // console.log("Authenticating")
             return passport.authenticate("jwt", cfg.jwtSession)
         }
     }
