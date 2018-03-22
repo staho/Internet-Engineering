@@ -15,7 +15,6 @@ exports.login = (req, res) => {
                 if(req.body.password !== user.password) {
                     res.status(401).send("Wrong password")
                 } else {
-                    //TODO: Jwt token
                     let payload = {
                         _id: user._id,
                     }

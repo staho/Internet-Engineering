@@ -11,7 +11,7 @@ let passport = require('passport'),
     }
 
 module.exports = () => {
-    // console.log("TUTAJ")    
+       
     let strategy = new Strategy(params, (payload, done) => {
         console.log(payload)
         User.findById(payload._id, (err, user) => {
