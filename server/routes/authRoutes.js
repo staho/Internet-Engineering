@@ -11,4 +11,7 @@ module.exports = (app, authenticate) => {
 
     app.route('/profile')
         .get(authenticate(), auth.profile)
+    
+    app.route('/users')
+        .post(authenticate(), auth.sugestUsers)
 }

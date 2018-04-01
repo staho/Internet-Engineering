@@ -54,3 +54,22 @@ exports.profile = (req, res) => {
     res.json(user)
 
 }
+
+exports.sugestUsers = (req, res) => {
+    if(req.body.q) {
+        User.find({username: {$regex: req.body.q, $options: "i"}}, (err, users) => {
+            if(err) {
+                res.status(400).send("Some error")
+            } else if (!users){
+                res.status(200).send({})
+            } else {
+                users = users.map(user => {
+                    return {
+                        username: user.username
+                    }
+                })
+                res.json({users: users})
+            }
+        })
+    }
+}
