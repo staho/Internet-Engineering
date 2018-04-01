@@ -17,6 +17,7 @@ exports.login = (req, res) => {
                 } else {
                     let payload = {
                         _id: user._id,
+                        date: new Date()
                     }
                     let token = jwt.encode(payload, cfg.jwtSecret)
                     res.json({token: token})
