@@ -26,7 +26,14 @@ exports.newDuel = (req, res) => {
 }
 
 exports.getUserDuels = (req, res) => {
-
+    Duel.find({$or: [{user1: req.user}, {user2: req.user}]}, 
+        (err, duelList) => {
+            if(err || !duelList) {
+                res.status(400).send("No duels or user error")
+            } else {
+                res.json({duels: duelList})
+            }
+    })
 }
 
 exports.updateDuel = (req, res) => {
