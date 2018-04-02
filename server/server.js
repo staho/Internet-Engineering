@@ -18,10 +18,6 @@ app.use(auth.initialize())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
-
-// let routes = require('./routes/authRoutes')
-// routes(app, auth.authenticate)
-
 let allRoutes = require('./routes/allRoutes')
 allRoutes(app, auth.authenticate)
 

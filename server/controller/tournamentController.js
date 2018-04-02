@@ -10,7 +10,8 @@ exports.allTournaments = () => {
 
 exports.createTournament = (req, res) => {
     if(req.body.usernames) {
-        let newTournament = Object.assign({}, req.body)
+        let newTournament = Object.assign({}, req.body),
+            duels = []
 
         newTournament.creator = req.user._id
 
@@ -28,11 +29,9 @@ exports.createTournament = (req, res) => {
                     })
                 } else {
                     newTournament.users = records.map(element => { return element._id})
-
                     records = arrayShuffle(records)
-
-                    let duels = []
                     if(records.length % 2 === 0) {
+
                         for(let i = 0; i < records.length; i += 2) {
                             duels[duels.length] = new Duel({
                                 user1: records[i]._id,
@@ -40,15 +39,39 @@ exports.createTournament = (req, res) => {
                                 tournamentDuel: true 
                             })
                         }
+                       
                     } else {
                         //this guy should play dwo duels
-                        let randomUser = records[Math.floor(Math.random() * records.length)]
+                        records[records.length] = records[Math.floor(Math.random() * records.length)]
+                        if(records[records.length - 1]._id === records[records.length - 2]._id) {
+                            let temp = records[0]
+                            records[0] = records[records.length - 1]
+                            records[records.length - 1] = temp
+                        }
+
+
+                        for(let i = 0; i < records.length; i += 2) {
+                            duels[duels.length] = new Duel({
+                                user1: records[i]._id,
+                                user2: records[i + 1]._id,
+                                tournamentDuel: true 
+                            })
+                        }
                         
                     }
 
+                    let dbDuels = duels.map(duel => new Duel(duel).save())
+                    Promise.all(dbDuels).then(duels => {
+                        newTournament.ladder = [duels]
+
+                        Tournament(newTournament).save().then(tournament => {
+                            res.json({tournament})
+                        })
+                    })
+
+                    
                 }
-                console.log(newTournament)
-            })
+            })       
 
     }
 
@@ -58,16 +81,13 @@ exports.updateTournament = () => {
     
 }
 
-arrayShuffle = array => {
+let arrayShuffle = array => {
     let m = array.length, t, i;
     
-    // While there remain elements to shuffle…
     while (m) {
     
-        // Pick a remaining element…
         i = Math.floor(Math.random() * m--);
     
-        // And swap it with the current element.
         t = array[m];
         array[m] = array[i];
         array[i] = t;

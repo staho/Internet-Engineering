@@ -7,7 +7,6 @@ let TournamentSchema = new Schema({
     name: {
         type: String,
         required: false,
-        unique: false
     },
     creator: {
         type: Schema.ObjectId,
@@ -28,7 +27,6 @@ let TournamentSchema = new Schema({
     },
     expires: {
         type: Date,
-        required: false,
     },
     state: {
         type: String,
@@ -37,10 +35,10 @@ let TournamentSchema = new Schema({
         default: "CREATED"
     },
     ladder: {
-        type: [{
+        type: [[{
             type: Schema.ObjectId,
             ref: 'Duel'
-        }],
+        }]],
         required: true
      },
     comments: [{
