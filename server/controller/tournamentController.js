@@ -29,11 +29,20 @@ exports.createTournament = (req, res) => {
                 } else {
                     newTournament.users = records.map(element => { return element._id})
 
-                    if(newTournament.users.length % 2 === 0) {
+                    records = arrayShuffle(records)
 
+                    let duels = []
+                    if(records.length % 2 === 0) {
+                        for(let i = 0; i < records.length; i += 2) {
+                            duels[duels.length] = new Duel({
+                                user1: records[i]._id,
+                                user2: records[i + 1]._id,
+                                tournamentDuel: true 
+                            })
+                        }
                     } else {
                         //this guy should play dwo duels
-                        let randomUser = newTournament.users[Math.floor(Math.random() * newTournament.users.length)]
+                        let randomUser = records[Math.floor(Math.random() * records.length)]
                         
                     }
 
@@ -46,5 +55,24 @@ exports.createTournament = (req, res) => {
 }
 
 exports.updateTournament = () => {
+    
+}
+
+arrayShuffle = array => {
+    let m = array.length, t, i;
+    
+    // While there remain elements to shuffle…
+    while (m) {
+    
+        // Pick a remaining element…
+        i = Math.floor(Math.random() * m--);
+    
+        // And swap it with the current element.
+        t = array[m];
+        array[m] = array[i];
+        array[i] = t;
+    }
+    
+    return array;
     
 }
