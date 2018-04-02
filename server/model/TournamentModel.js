@@ -9,8 +9,16 @@ let TournamentSchema = new Schema({
         required: false,
         unique: false
     },
+    creator: {
+        type: Schema.ObjectId,
+        required: true,
+        ref: "User"
+    },
     users: {
-        type: [String],
+        type: [{
+            type: Schema.ObjectId,
+            ref: "User"
+        }],
         required: true
     }, 
     createdDate: {
@@ -22,18 +30,26 @@ let TournamentSchema = new Schema({
         type: Date,
         required: false,
     },
-    status: {
+    state: {
         type: String,
+        enum: ["CREATED", "IN_PROGRESS", "CLOSED"],
         required: true,
-        default: "Started"
+        default: "CREATED"
     },
-    ladder: [{
+    ladder: {
+        type: [{
+            type: Schema.ObjectId,
+            ref: 'Duel'
+        }],
+        required: true
+     },
+    comments: [{
         type: Schema.ObjectId,
-        ref: 'Duel'
-    }]
+        ref: "Comment"
+    }],
 
 })
 
-TournamentSchema.plugin(uniqueValidator)
+// TournamentSchema.plugin(uniqueValidator)
 
 module.exports = mongoose.model('Tournament', TournamentSchema)

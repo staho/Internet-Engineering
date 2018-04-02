@@ -23,21 +23,32 @@ let DuelSchema = new Schema({
     finishedDate: Date,
     state: {
         type: String,
-        enum: ['CREATED', 'PLAYING', 'FINISHED'],
+        enum: ['CREATED', 'PLAYING', 'CLOSED'],
         default: 'CREATED'
     },
     result: {
-        userWinner: String,
+        winner: { 
+            type: String,
+            enum: ["user1", "user2"]
+        },
         score: {
-            1: Number,
-            2: Number
+            user1: Number,
+            user2: Number
         }
     },
     tournamentDuel: {
         type: Boolean,
         required: true,
         default: false
+    },
+    _version: {
+        type: Number,
+        default: 1
+    },
+    comments: {
+        type: [Schema.ObjectId],
+        ref: 'Comment'
     }
-})
+}, {strict: true})
 
 module.exports = mongoose.model('Duel', DuelSchema)

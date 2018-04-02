@@ -1,14 +1,11 @@
 'use strict'
 
 module.exports = (app, authenticate) => {
-    let auth = require('../controller/tournamentController')
+    let tournamentController = require('../controller/tournamentController')
 
-    app.route('/login')
-        .post(auth.login)
-    
-    app.route('/register')
-        .post(auth.register)
+    app.route('/tournament')
+        .get(authenticate(), tournamentController.allTournaments)
+        .post(authenticate(), tournamentController.createTournament)
+        .put(authenticate(), tournamentController.updateTournament)
 
-    app.route('/profile')
-        .get(authenticate(), auth.profile)
 }

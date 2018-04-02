@@ -9,6 +9,6 @@ module.exports = (app, authenticate) => {
     app.route('/duels')
         .get(authenticate(), duelController.getUserDuels)
 
-    // app.route('/profile')
-    //     .get(authenticate(), auth.profile)
+    app.route('/duel')
+        .put(authenticate(), duelController.updateDuel)
 }
