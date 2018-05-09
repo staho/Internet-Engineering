@@ -14,4 +14,7 @@ module.exports = (app, authenticate) => {
     
     app.route('/users')
         .post(authenticate(), auth.sugestUsers)
+
+    app.route('/username')
+        .post(authenticate(), auth.username)
 }

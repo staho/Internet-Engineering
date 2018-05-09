@@ -18,6 +18,7 @@ import Paper from 'material-ui/Paper'
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import Star from 'material-ui/svg-icons/action/stars'
 import config from './config'
+import Duels from './modules/duels/Duels';
 
 class App extends Component {
   constructor(props){ 
@@ -77,8 +78,12 @@ class App extends Component {
     const recentsIcon = <Apps />
     const favoritesIcon = <Star />
     const nearbyIcon = <IconLocationOn />
+    let mainElem = <Duels user={this.state.user}/>
     
     return (
+
+
+
       <div className="App">
         <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
           <AppBar title="PingPong Tournaments"
@@ -88,13 +93,13 @@ class App extends Component {
            />
           </MuiThemeProvider>
           <div className="content">
-
+            {mainElem}
           </div>
           <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
           <Paper zDepth={1}>
             <BottomNavigation selectedIndex={this.state.selectedIndex}>
               <BottomNavigationItem
-                label="Recents"
+                label="Duels"
                 icon={recentsIcon}
                 onClick={() => this.select(0)}
               />

@@ -3,7 +3,8 @@ let config = {
     routes: {
         profile: "/profile",
         login: "/login",
-        register: "/register"
+        register: "/register",
+        duels: "/duels"
     },
 
     getRoute: property => {

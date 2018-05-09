@@ -50,9 +50,7 @@ exports.profile = (req, res) => {
     let user = req.user
     user['password'] = undefined
     // delete user.password
-    console.log(user.password)
     res.json(user)
-
 }
 
 exports.sugestUsers = (req, res) => {
@@ -69,6 +67,21 @@ exports.sugestUsers = (req, res) => {
                     }
                 })
                 res.json({users: users})
+            }
+        })
+    }
+}
+
+exports.username = (req, res) => {
+    if(req.body.id) {
+        User.findById(req.body.id, (err, user) => {
+            if(err) {
+                res.status(400).send("Error")
+            } else if (!user) {
+                res.status0(200).send({error: "User not found"})
+            } else {
+                user["password"] = undefined
+                res.json({user: user})
             }
         })
     }
