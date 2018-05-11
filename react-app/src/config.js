@@ -4,7 +4,10 @@ let config = {
         profile: "/profile",
         login: "/login",
         register: "/register",
-        duels: "/duels"
+        duels: "/duels",
+        username: "/username",
+        usernames: "/usernames"
+        
     },
 
     getRoute: property => {

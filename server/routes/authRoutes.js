@@ -17,4 +17,7 @@ module.exports = (app, authenticate) => {
 
     app.route('/username')
         .post(authenticate(), auth.username)
+
+    app.route('/usernames')
+        .post(authenticate(), auth.usernames)
 }

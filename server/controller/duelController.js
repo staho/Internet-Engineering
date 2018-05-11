@@ -31,7 +31,7 @@ exports.getUserDuels = (req, res) => {
             if(err || !duelList) {
                 res.status(400).send("No duels or user error")
             } else {
-                res.json({duels: duelList})
+                res.json(duelList)
             }
     })
 }

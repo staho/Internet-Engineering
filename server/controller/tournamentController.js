@@ -8,6 +8,8 @@ exports.allTournaments = (req, res) => {
     req.param.variable_name
 }
 
+
+// need serious rework
 exports.createTournament = (req, res) => {
     if(req.body.usernames) {
         let newTournament = Object.assign({}, req.body),
@@ -41,7 +43,6 @@ exports.createTournament = (req, res) => {
                         }
                        
                     } else {
-<<<<<<< Updated upstream
                         //this guy should play dwo duels
                         records[records.length] = records[Math.floor(Math.random() * records.length)]
                         if(records[records.length - 1]._id === records[records.length - 2]._id) {
@@ -58,10 +59,8 @@ exports.createTournament = (req, res) => {
                                 tournamentDuel: true 
                             })
                         }
-=======
                         //this guy should play dwo duels or not
                         let randomUser = records[Math.floor(Math.random() * records.length)]
->>>>>>> Stashed changes
                         
                     }
 

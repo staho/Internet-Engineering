@@ -81,8 +81,42 @@ exports.username = (req, res) => {
                 res.status0(200).send({error: "User not found"})
             } else {
                 user["password"] = undefined
+                user["createdDate"] = undefined
+                user["__v"] = undefined
+
                 res.json({user: user})
             }
         })
+    }
+}
+
+exports.usernames = (req, res) => {
+    console.log("here1")
+    console.log(req.body)
+    if(req.body.ids) {
+        console.log("here")
+        let users = []
+
+        req.body.ids.forEach(id => {
+            users.push(User.findById(id, (err, user) => {
+                if(err) {
+                    res.status(400).send("Error")
+                } else if (!user) {
+                    res.status0(200).send({error: "User not found"})
+                } else {}
+            }))
+        })
+
+        Promise.all(users).then(usersVals => {
+            usersVals.forEach(user => {
+                user["password"] = undefined
+                user["createdDate"] = undefined
+                user["__v"] = undefined
+            })
+            res.json(usersVals)
+        }) 
+
+        // console.log(users)
+        
     }
 }

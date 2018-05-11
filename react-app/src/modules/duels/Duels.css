@@ -27,6 +27,12 @@
   }
   .item-content {
     position: relative;
+    width: inherit;
+    height: inherit;
+  }
+  .my-inside {
     width: 100%;
     height: 100%;
+    /* background: rgb(56, 16, 202); */
+    /* color: blue; */
   }
