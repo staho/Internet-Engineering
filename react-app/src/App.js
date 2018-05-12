@@ -66,7 +66,7 @@ class App extends Component {
         return response.json()
     }).then(profile => {
       this.setState({user: profile, logged: true})
-      console.log(profile)
+      // console.log(profile)
     }).catch(err => {
       console.error(err)
     })

@@ -8,19 +8,19 @@ import FlatButton from 'material-ui/FlatButton/FlatButton';
 
 class Logged extends React.Component {
     static muiName = 'Logged'
-    constructor(props){
-        super(props)
-    }
+    // constructor(props){
+    //     super(props)
+    // }
 
     handleChange = (event, value) => {
         if(value === "3") {
             this.props.onChange(false)
         }
-        console.log(value)
+        // console.log(value)
     }
 
     render() {
-        console.log(this.props.user)
+        // console.log(this.props.user)
         return(
             <IconMenu 
                 iconButtonElement={

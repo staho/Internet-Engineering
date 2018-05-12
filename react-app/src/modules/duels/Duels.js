@@ -1,7 +1,6 @@
 import React from 'react'
 import Muuri from 'muuri'
 import config from '../../config'
-import ReactDOM from 'react-dom'
 import AddDuel from './addDuel/AddDuel'
 
 import './Duels.css'
@@ -77,7 +76,7 @@ class Duels extends React.Component {
     resolveDuels = (duels) => {
 
         let usersToResolve = []
-        let duelsResolved = this.state.items
+        // let duelsResolved = this.state.items
 
 
         duels.forEach(duel => {
@@ -133,11 +132,11 @@ class Duels extends React.Component {
     createItems = () => {
         let duels = this.state.duels
 
-        if(!duels) return
+        if(!duels) return []
 
         let items = duels.map((duel, index) => {
 
-            if(this.state.usersResolved.length < 2) return
+            if(this.state.usersResolved.length < 2) return undefined
 
             let username1 = this.state.usersResolved.find(elem => duel.user1 === elem.id).username
             let username2 = this.state.usersResolved.find(elem => duel.user2 === elem.id).username
@@ -148,8 +147,8 @@ class Duels extends React.Component {
                                     '<div class="my-inside" duelId=' + duel._id + '>' +
                                         'Duel: <br />'+
                                         username1 + ' vs '+ username2 +
-                                    '</div>'
-                                '</div>'
+                                    '</div>' +
+                                '</div>' +
                             '</div>'
             itemElem.innerHTML = itemTmp
 
@@ -161,7 +160,7 @@ class Duels extends React.Component {
     }
 
     render() { 
-        console.log("render", this.state.showDialog)
+        // console.log("render", this.state.showDialog)
         let items = this.createItems()
         if(this.state.grid && items[0]){
             let gridItems = this.state.grid.getItems()
@@ -186,7 +185,7 @@ class Duels extends React.Component {
                 <div className="grid">
 
                 </div>
-                <AddDuel />
+                <AddDuel user={this.props.user} />
                 
             </div>
         )

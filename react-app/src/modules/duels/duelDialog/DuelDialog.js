@@ -9,7 +9,8 @@ class DuelDialog extends React.Component {
         super(props)
         this.state = {
             duel: props.duel,
-            open: props.showDialog
+            open: props.showDialog,
+            newDuel: false
 
         }
     }
@@ -22,7 +23,8 @@ class DuelDialog extends React.Component {
         if(nextProps.showDialog !== prevState.open) {
             return {
                 open: nextProps.showDialog,
-                duel: nextProps.duel
+                duel: nextProps.duel,
+                newDuel: prevState.newDuel
             }
         }
 
@@ -32,10 +34,15 @@ class DuelDialog extends React.Component {
 
     render() {
         // console.log("render dialog", this.state.duel)
+        let title = "New duel"
+
+        if(!this.state.newDuel && this.state.duel) {
+            title = `${this.state.duel.username1.username} vs ${this.state.duel.username2.username}`
+        }
 
         return (
         <Dialog
-            title={`${this.state.duel.username1.username} vs ${this.state.duel.username2.username} `}
+            title={title}
             // actions={actionsRegister}
             modal={false}
             open={this.state.open}
