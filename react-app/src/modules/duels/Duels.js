@@ -24,6 +24,8 @@ class Duels extends React.Component {
             dragEnabled: true
         })
 
+        grid.on('add', items => items.forEach(item => item._element.onclick = event => this.onDuelClick(event.target.attributes.duelid.nodeValue)))
+
         this.setState({grid: grid})
         this.getDuels()
     }
@@ -140,7 +142,7 @@ class Duels extends React.Component {
             let username2 = this.state.usersResolved.find(elem => duel.user2 === elem.id).username
 
             let itemElem = document.createElement('div')
-            let itemTmp = '<div class="item" key={"item-"' + index +'}>' +
+            let itemTmp = '<div class="item" key="item-' + duel._id +'">' +
                                 '<div class="item-content">' +
                                     '<div class="my-inside" duelId=' + duel._id + '>' +
                                         'Duel: <br />'+
@@ -158,22 +160,27 @@ class Duels extends React.Component {
     }
 
     render() { 
+        console.log("render", this.state.showDialog)
         let items = this.createItems()
         if(this.state.grid && items[0]){
-
-            this.state.grid.add(items)
-
             let gridItems = this.state.grid.getItems()
-            console.log(gridItems[0]) 
-            gridItems.forEach(item => item._element.onclick = event => this.onDuelClick(event.target.attributes.duelid.nodeValue))
 
+            items.forEach(item => {
+                let newKey = item.attributes.key.nodeValue
+                let found = gridItems.find(gridItem => gridItem._element.attributes.key.nodeValue === newKey)
+                if(!found) this.state.grid.add(item)
+            })
         }
+        let duelDialog = <div />
+
+        if(this.state.showDialog)
+         duelDialog = <DuelDialog 
+                                duel={this.state.choosenDuel}
+                                showDialog={this.state.showDialog} />
 
         return(
             <div>
-                <DuelDialog 
-                    duel={this.state.choosenDuel}
-                    showDialog={this.state.showDialog} />
+               {duelDialog}
                 
                 <div className="grid">
 

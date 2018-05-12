@@ -8,7 +8,7 @@ class DuelDialog extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            duel: {...props.duel},
+            duel: props.duel,
             open: props.showDialog
 
         }
@@ -18,17 +18,30 @@ class DuelDialog extends React.Component {
         this.setState({open: false})
     }
 
+    static getDerivedStateFromProps = (nextProps, prevState) => {
+        if(nextProps.showDialog !== prevState.open) {
+            return {
+                open: nextProps.showDialog,
+                duel: nextProps.duel
+            }
+        }
+
+        return null
+    }
+
+
     render() {
+        // console.log("render dialog", this.state.duel)
 
         return (
         <Dialog
-            title="${this.state.duel.username1} vs "
+            title={`${this.state.duel.username1.username} vs ${this.state.duel.username2.username} `}
             // actions={actionsRegister}
             modal={false}
             open={this.state.open}
             onRequestClose={this.handleClose}
             >
-            <TextField
+            {/* <TextField
                 floatingLabelText="Username"
                 // value={this.state.username}
                 // onChange={this.onUsernameChange}
@@ -51,7 +64,7 @@ class DuelDialog extends React.Component {
                 // type="password"
                 // fullWidth={true}
                 // errorText={this.state.pwdValidationStatus}
-            />
+            /> */}
         </ Dialog>
         )
     }
