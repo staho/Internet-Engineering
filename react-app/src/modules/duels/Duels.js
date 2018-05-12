@@ -4,6 +4,7 @@ import config from '../../config'
 import ReactDOM from 'react-dom'
 
 import './Duels.css'
+import DuelDialog from './duelDialog/DuelDialog';
 
 class Duels extends React.Component {
     constructor(props){
@@ -11,8 +12,10 @@ class Duels extends React.Component {
         this.state = {
             grid: null,
             items: [],
+            itemsToAdd: [],
             duels: [],
-            usersResolved: []
+            usersResolved: [],
+            showDialog: false
         }
     }
 
@@ -92,8 +95,6 @@ class Duels extends React.Component {
 
         })
 
-        console.log(usersToResolve)
-
         this.resolveUsernames(usersToResolve.map(user => user.id)
             ).then(response => {
 
@@ -110,13 +111,15 @@ class Duels extends React.Component {
             }).catch(err => {
                 console.error(err)
             })
-
-        console.log(this.state.usersResolved)
     }
 
 
     onDuelClick = (id) => {
         let duel = this.state.duels.find(element => element._id === id)
+        duel.username1 = this.state.usersResolved.find(user => user.id === duel.user1) 
+        duel.username2 = this.state.usersResolved.find(user => user.id === duel.user2) 
+        
+        this.setState({choosenDuel: duel, showDialog: true})
         console.log(duel)
     }
 
@@ -125,25 +128,21 @@ class Duels extends React.Component {
     }
 
     createItems = () => {
-        console.log(this.state.duels)
         let duels = this.state.duels
 
-        // console.log(this.state.grid)
-
         if(!duels) return
+
         let items = duels.map((duel, index) => {
 
-            // if()
-            // console.log(this.state.usersResolved)
             if(this.state.usersResolved.length < 2) return
+
             let username1 = this.state.usersResolved.find(elem => duel.user1 === elem.id).username
             let username2 = this.state.usersResolved.find(elem => duel.user2 === elem.id).username
-            // console.log(username1, username2)
 
             let itemElem = document.createElement('div')
             let itemTmp = '<div class="item" key={"item-"' + index +'}>' +
                                 '<div class="item-content">' +
-                                    '<div class="my-inside" value=' + duel._id + '>' +
+                                    '<div class="my-inside" duelId=' + duel._id + '>' +
                                         'Duel: <br />'+
                                         username1 + ' vs '+ username2 +
                                     '</div>'
@@ -151,11 +150,9 @@ class Duels extends React.Component {
                             '</div>'
             itemElem.innerHTML = itemTmp
 
-            console.log(itemElem.firstChild)
-            return [itemElem.firstChild, duel._id]
+            return itemElem.firstChild
         })
 
-        console.log(items)
         return items
 
     }
@@ -163,19 +160,24 @@ class Duels extends React.Component {
     render() { 
         let items = this.createItems()
         if(this.state.grid && items[0]){
-            this.state.grid.add(items.map(item => item[0]))
 
-            let gridItems = this.state.grid.getItems() 
-            gridItems.forEach(item => item._element.onclick=(event)=>console.log(event.target.value))
-            console.log(gridItems)
+            this.state.grid.add(items)
+
+            let gridItems = this.state.grid.getItems()
+            console.log(gridItems[0]) 
+            gridItems.forEach(item => item._element.onclick = event => this.onDuelClick(event.target.attributes.duelid.nodeValue))
 
         }
 
-        // console.log(this.state.grid.)
-
         return(
-            <div className="grid">
-                {/* {items} */}
+            <div>
+                <DuelDialog 
+                    duel={this.state.choosenDuel}
+                    showDialog={this.state.showDialog} />
+                
+                <div className="grid">
+
+                </div>
             </div>
         )
     }

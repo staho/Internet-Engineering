@@ -92,9 +92,11 @@ class App extends Component {
                   
            />
           </MuiThemeProvider>
+          <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
           <div className="content">
             {mainElem}
           </div>
+          </MuiThemeProvider>
           <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
           <Paper zDepth={1}>
             <BottomNavigation selectedIndex={this.state.selectedIndex}>
