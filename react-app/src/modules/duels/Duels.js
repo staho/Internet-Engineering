@@ -2,6 +2,7 @@ import React from 'react'
 import Muuri from 'muuri'
 import config from '../../config'
 import ReactDOM from 'react-dom'
+import AddDuel from './addDuel/AddDuel'
 
 import './Duels.css'
 import DuelDialog from './duelDialog/DuelDialog';
@@ -180,11 +181,13 @@ class Duels extends React.Component {
 
         return(
             <div>
-               {duelDialog}
+                {duelDialog}
                 
                 <div className="grid">
 
                 </div>
+                <AddDuel />
+                
             </div>
         )
     }
