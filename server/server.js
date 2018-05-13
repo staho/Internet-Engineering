@@ -17,6 +17,7 @@ app.use(cors({origin: 'http://localhost:3001',}))
 app.use(auth.initialize())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
+app.use(express.static('public'))
 
 let allRoutes = require('./routes/allRoutes')
 allRoutes(app, auth.authenticate)

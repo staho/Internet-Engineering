@@ -17,6 +17,7 @@ class AddDuel extends React.Component {
         super(props)
         this.state = {
             openDialog: false,
+            user: this.props.user
         }
     }
 
@@ -27,14 +28,20 @@ class AddDuel extends React.Component {
 
     } 
 
+    handleClose = () => {
+        this.setState({openDialog: false})
+    }
 
     render() {
 
         let duelDialog = <div />
         if(this.state.openDialog) {
             duelDialog = <DuelDialog 
+                            key="add-dialog"
                             showDialog={this.state.openDialog}
-                            newDuel={true} /> 
+                            newDuel={true}
+                            user={this.props.user} 
+                            handleClose={this.handleClose}/> 
         }
 
         return (

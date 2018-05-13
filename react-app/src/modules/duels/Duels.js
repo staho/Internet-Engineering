@@ -174,7 +174,7 @@ class Duels extends React.Component {
         let duelDialog = <div />
 
         if(this.state.showDialog)
-         duelDialog = <DuelDialog 
+         duelDialog = <DuelDialog key="standard-dialog"
                                 duel={this.state.choosenDuel}
                                 showDialog={this.state.showDialog} />
 

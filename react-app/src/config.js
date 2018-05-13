@@ -6,7 +6,10 @@ let config = {
         register: "/register",
         duels: "/duels",
         username: "/username",
-        usernames: "/usernames"
+        usernames: "/usernames",
+        users: "/users",
+
+        avatars: "/avatars"
         
     },
 
