@@ -8,6 +8,7 @@ let config = {
         username: "/username",
         usernames: "/usernames",
         users: "/users",
+        userProfile: "/userProfile",
 
         avatars: "/avatars"
         

@@ -121,3 +121,19 @@ exports.usernames = (req, res) => {
         
     }
 }
+
+exports.findUser = (req, res) => {
+    if(req.body.username) {
+        User.findOne({username: req.body.username}, (err, user) => {
+            if(err) {
+                res.status(400).send("Some error")
+            } else if (!user){
+                res.status(200).send({})
+            } else {
+                res.json({user: user})
+            }
+        })
+    } else {
+        res.status(200).send({})
+    }
+}
