@@ -32,6 +32,8 @@ class AddDuel extends React.Component {
         this.setState({openDialog: false})
     }
 
+  
+
     render() {
 
         let duelDialog = <div />

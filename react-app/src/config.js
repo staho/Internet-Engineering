@@ -9,6 +9,7 @@ let config = {
         usernames: "/usernames",
         users: "/users",
         userProfile: "/userProfile",
+        newDuel: "/newDuel",
 
         avatars: "/avatars"
         

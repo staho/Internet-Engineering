@@ -9,6 +9,7 @@ import Avatar from 'material-ui/Avatar'
 import List from 'material-ui/List/List'
 import ListItem from 'material-ui/List/ListItem'
 import RaisedButton from 'material-ui/RaisedButton'
+import AddedSnackbar from './AddedSnackbar'
 
 const buttonStyle = {
     margin: 6,
@@ -35,7 +36,8 @@ class DuelDialog extends React.Component {
             avatar2: "",
             prevDate2: new Date(),
             prevDate1: new Date(),
-            createdDuel: {}
+            createdDuel: {},
+            snackBarOpen: false
 
         }
     }
@@ -45,6 +47,43 @@ class DuelDialog extends React.Component {
         if(this.props.handleClose) {
             this.props.handleClose()
         }
+    }
+
+    handleAdd = () => {
+        if(this.state.createdDuel && this.state.createdDuel.user2) {
+            let data = JSON.stringify(this.state.createdDuel)
+            fetch(config.getRoute("newDuel"), {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                },
+                body: data
+            }).then(response => {
+                if(!response.ok) {
+                    throw new Error(response.statusText)
+                }
+                else return response
+        }).then(response => {
+            return response.json()
+        }).then(resJson => {
+            if(resJson.success){
+                this.openSnackBar()
+                this.handleClose()
+            }
+        }).catch(err => {
+            console.error(err)
+        })
+        }
+    }
+
+    openSnackBar = () => {
+        this.setState({openSnackBar: true})
+        let promise = new Promise(resolve => {
+            setTimeout(this.setState({openSnackBar: false}), 3000)
+        })
+      
+
     }
 
     static getDerivedStateFromProps = (nextProps, prevState) => {
@@ -177,6 +216,7 @@ class DuelDialog extends React.Component {
                             label="Add" 
                             primary={true} 
                             style={buttonStyle} 
+                            onClick={this.handleAdd}
                             />)
         }
 
@@ -232,6 +272,7 @@ class DuelDialog extends React.Component {
                     <div style={buttonDivStyle}>
                         {buttons}
                     </ div>
+                    <AddedSnackbar open={this.state.snackBarOpen} />
             </ Dialog>
         )
     }

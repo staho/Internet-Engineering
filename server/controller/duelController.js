@@ -19,7 +19,7 @@ exports.newDuel = (req, res) => {
             }
 
             newDuel.save().then(duel => {
-                res.json({Msg: "Duel added successfully"})
+                res.json({msg: "Duel added successfully", success: true})
             })
         }
     })
