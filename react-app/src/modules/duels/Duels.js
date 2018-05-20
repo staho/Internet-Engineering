@@ -2,9 +2,11 @@ import React from 'react'
 import Muuri from 'muuri'
 import config from '../../config'
 import AddDuel from './addDuel/AddDuel'
+import EditDuel from './editDuel/EditDuel'
+import InfiniteScroll from 'react-infinite-scroll-component'
 
 import './Duels.css'
-import DuelDialog from './duelDialog/DuelDialog';
+// import DuelDialog from './duelDialog/DuelDialog';
 
 class Duels extends React.Component {
     constructor(props){
@@ -15,7 +17,8 @@ class Duels extends React.Component {
             itemsToAdd: [],
             duels: [],
             usersResolved: [],
-            showDialog: false
+            showDialog: false,
+            choosenDuel: undefined
         }
     }
 
@@ -125,6 +128,10 @@ class Duels extends React.Component {
         console.log(duel)
     }
 
+    handleClose = () => {
+        this.setState({showDialog: false, choosenDuel: undefined})
+    }
+
     componentWillUnmount = () => {
         this.state.grid.destroy()
     }
@@ -161,9 +168,11 @@ class Duels extends React.Component {
 
     render() { 
         // console.log("render", this.state.showDialog)
+        let itemCount = 0
         let items = this.createItems()
         if(this.state.grid && items[0]){
             let gridItems = this.state.grid.getItems()
+            itemCount = items.length
 
             items.forEach(item => {
                 let newKey = item.attributes.key.nodeValue
@@ -171,21 +180,26 @@ class Duels extends React.Component {
                 if(!found) this.state.grid.add(item)
             })
         }
-        let duelDialog = <div />
+        // let duelDialog = <div />
 
-        if(this.state.showDialog)
-         duelDialog = <DuelDialog key="standard-dialog"
-                                duel={this.state.choosenDuel}
-                                showDialog={this.state.showDialog} />
+        // if(this.state.showDialog)
+        //  duelDialog = <DuelDialog key="standard-dialog"
+                                // duel={this.state.choosenDuel}
+                                // showDialog={this.state.showDialog} />
 
         return(
             <div>
-                {duelDialog}
-                
-                <div className="grid">
-
-                </div>
+                <InfiniteScroll 
+                    dataLength={itemCount}
+                    >
+                    <div className="grid">
+                    </div>
+                </InfiniteScroll>
                 <AddDuel user={this.props.user} />
+                <EditDuel duel={this.state.choosenDuel} 
+                            open={this.state.showDialog}
+                            handleClose={this.handleClose}/>
+                
                 
             </div>
         )

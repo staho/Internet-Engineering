@@ -8,7 +8,8 @@ let express = require("express"),
     app = express(),
     port = process.env.port || 3000,
     auth = require('./auth')(),
-    cors = require('cors')
+    cors = require('cors'),
+    myMiddleware = require('./middleware/middle')
 
 mongoose.Promise = global.Promise
 mongoose.connect('mongodb://' + cfg.mongodb.user + ':' + cfg.mongodb.password + '@' + cfg.mongodb.serverAddress)
@@ -17,6 +18,7 @@ app.use(cors({origin: 'http://localhost:3001',}))
 app.use(auth.initialize())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
+// app.use(myMiddleware.isAvatarAvailalble)
 app.use(express.static('public'))
 
 let allRoutes = require('./routes/allRoutes')

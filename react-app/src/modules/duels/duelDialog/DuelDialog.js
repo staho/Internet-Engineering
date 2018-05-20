@@ -36,8 +36,6 @@ class DuelDialog extends React.Component {
     }
 
     static getDerivedStateFromProps = (nextProps, prevState) => {
-        // console.log(this.state, prevState)
-        // console.log(this.props,  nextProps)
         console.log(nextProps, prevState)
         if(nextProps.showDialog !== prevState.open) {
             
@@ -51,16 +49,6 @@ class DuelDialog extends React.Component {
                 avatar2: `${config.getRoute("avatars")}/${nextProps.duel.user2}.png`,
             }
         }
-
-        // if(nextProps.duel !== prevState.duel) {
-        //     return {
-        //         duel: nextProps.duel,
-        //         textFieldValue1: "",
-        //         textFieldValue2: "",
-        //         avatar1: "",
-        //         avatar2: ""
-        //     }
-        // }
 
         if(nextProps.duel) {
             console.log("xdd")

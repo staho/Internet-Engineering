@@ -62,7 +62,7 @@ exports.sugestUsers = (req, res) => {
                 res.status(200).send({})
             } else {
                 users = users.map(user => {
-                    return user.username
+                    return { username: user.username, _id: user._id}
                     
                 })
                 res.json({users: users})
