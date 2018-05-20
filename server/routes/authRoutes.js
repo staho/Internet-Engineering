@@ -20,4 +20,7 @@ module.exports = (app, authenticate) => {
 
     app.route('/usernames')
         .post(authenticate(), auth.usernames)
+
+    app.route("/userProfile")
+        .post(authenticate(), auth.findUser)
 }

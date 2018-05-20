@@ -129,7 +129,11 @@ class Duels extends React.Component {
     }
 
     handleClose = () => {
+<<<<<<< HEAD
         this.setState({showDialog: false, choosenDuel: undefined})
+=======
+        this.setState({showDialog: false})
+>>>>>>> origin/master
     }
 
     componentWillUnmount = () => {
@@ -184,8 +188,9 @@ class Duels extends React.Component {
 
         // if(this.state.showDialog)
         //  duelDialog = <DuelDialog key="standard-dialog"
-                                // duel={this.state.choosenDuel}
-                                // showDialog={this.state.showDialog} />
+        //                         duel={this.state.choosenDuel}
+        //                         showDialog={this.state.showDialog} 
+        //                         handleClose={this.handleClose}/>
 
         return(
             <div>

@@ -124,6 +124,8 @@ class AddDuel extends React.Component {
         return [addButton, cancelButton]
     }
 
+  
+
     render() {
 
         let duelDialog = <div />

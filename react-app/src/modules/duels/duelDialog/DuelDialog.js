@@ -8,6 +8,17 @@ import AutoComplete from 'material-ui/AutoComplete'
 import Avatar from 'material-ui/Avatar'
 import List from 'material-ui/List/List'
 import ListItem from 'material-ui/List/ListItem'
+import RaisedButton from 'material-ui/RaisedButton'
+import AddedSnackbar from './AddedSnackbar'
+
+const buttonStyle = {
+    margin: 6,
+}
+const buttonDivStyle = {
+    position: "absolute",
+    right: 6,
+    bottom: 6
+}
 
 
 class DuelDialog extends React.Component {
@@ -24,15 +35,55 @@ class DuelDialog extends React.Component {
             avatar1: "",
             avatar2: "",
             prevDate2: new Date(),
+            prevDate1: new Date(),
+            createdDuel: {},
+            snackBarOpen: false
 
         }
     }
 
     handleClose = () => {
-        this.setState({open: false})
+        this.setState({open: false, duel: undefined})
         if(this.props.handleClose) {
             this.props.handleClose()
         }
+    }
+
+    handleAdd = () => {
+        if(this.state.createdDuel && this.state.createdDuel.user2) {
+            let data = JSON.stringify(this.state.createdDuel)
+            fetch(config.getRoute("newDuel"), {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                },
+                body: data
+            }).then(response => {
+                if(!response.ok) {
+                    throw new Error(response.statusText)
+                }
+                else return response
+        }).then(response => {
+            return response.json()
+        }).then(resJson => {
+            if(resJson.success){
+                this.openSnackBar()
+                this.handleClose()
+            }
+        }).catch(err => {
+            console.error(err)
+        })
+        }
+    }
+
+    openSnackBar = () => {
+        this.setState({openSnackBar: true})
+        let promise = new Promise(resolve => {
+            setTimeout(this.setState({openSnackBar: false}), 3000)
+        })
+      
+
     }
 
     static getDerivedStateFromProps = (nextProps, prevState) => {
@@ -50,6 +101,7 @@ class DuelDialog extends React.Component {
             }
         }
 
+
         if(nextProps.duel) {
             console.log("xdd")
             return {
@@ -62,7 +114,7 @@ class DuelDialog extends React.Component {
 
             }
         }
-
+        console.log("hir")
         return {
             newDuel: nextProps.newDuel,
             textFieldValue1: nextProps.user.username,
@@ -71,19 +123,47 @@ class DuelDialog extends React.Component {
         }
     }
 
-    handleUpdateInput2 = (value) => {
+    handleUpdateInput = (value, storeNum) => {
         let date = new Date()
-
-        if(this.state.prevDate2){
-            let diff = date.getTime() - this.state.prevDate2.getTime()
+        let prevDate = this.state[`prevDate${storeNum}`]
+        if(prevDate){
+            let diff = date.getTime() - prevDate.getTime()
             if(diff > 500) {
-                this.fetchSugestions(value, 2)
+                this.fetchSugestions(value, storeNum)
             }
-            // console.log(diff, date.getTime(), this.state.prevDate2.getTime())
             
         }
+        
+        if( storeNum === 1 ) {
+            this.setState({textFieldValue1: value, prevDate1: date})
+        } else if( storeNum === 2 ) {
+            this.setState({textFieldValue2: value, prevDate2: date})
+        }
+    }
 
-        this.setState({textFieldValue2: value, prevDate2: date})
+    onNewRequest = (choosenRequest, index) => {
+        let data = JSON.stringify({username: choosenRequest})
+        fetch(config.getRoute("userProfile"), {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem("token")}`
+            },
+            body: data
+        }).then(response => {
+            if(!response.ok) {
+                throw new Error(response.statusText)
+            }
+            else return response
+        }).then(response => {
+            return response.json()
+        }).then(jsonRes => {
+            let user = jsonRes.user
+           this.setState({createdDuel: {user2: choosenRequest}, avatar2: `${config.getRoute("avatars")}/${user._id}.png`,})
+        }).catch(err => {
+            console.error(err)
+        })
+        console.log(choosenRequest)
     }
 
     fetchSugestions = (value, storeNum) => {
@@ -118,55 +198,80 @@ class DuelDialog extends React.Component {
 
 
     render() {
-        let title = "New duel"
+        let title = "New duel",
+            buttons = []
 
         if(!this.state.newDuel && this.state.duel) {
             title = `${this.state.duel.username1.username} vs ${this.state.duel.username2.username}`
+            buttons.push(<RaisedButton 
+                            key="save-btn" 
+                            label="Save" 
+                            primary={true} 
+                            style={buttonStyle}/>)
+        } else {
+            buttons.push(<RaisedButton 
+                            key="add-btn" 
+                            label="Add" 
+                            primary={true} 
+                            style={buttonStyle} 
+                            onClick={this.handleAdd}
+                            />)
         }
 
-        // console.log(this.state.newDuel)
+        buttons.push(<RaisedButton 
+                        key="cancel-btn" 
+                        label="Cancel" 
+                        secondary={true} 
+                        style={buttonStyle}
+                        onClick={this.handleClose}
+                        />)
+
+        // console.log(this.state.avatar2)
 
         return (
-        <Dialog
-            title={title}
-            // actions={actionsRegister}
-            modal={false}
-            open={this.state.open}
-            onRequestClose={this.handleClose}
-            >
-        <List>
-            <ListItem
-                disabled={true}
-                leftAvatar={
-                    <Avatar src={this.state.avatar1} />
-                }
+            <Dialog
+                title={title}
+                // actions={actionsRegister}
+                modal={false}
+                open={this.state.open}
+                onRequestClose={this.handleClose}
                 >
-                 <AutoComplete
-                    hintText="Type anything"
-                    dataSource={this.state.dataSource1}
-                    // defaultValue={username1}
-                    searchText={this.state.textFieldValue1}
-                    // onUpdateInput={this.handleUpdateInput}
-                    />
-             </ListItem>
-             <ListItem
-                disabled={true}
-                leftAvatar={
-                    <Avatar src={this.state.avatar2}>
-
-                        </Avatar>
-                }
-                >
-                 <AutoComplete
-                    hintText="Type anything"
-                    dataSource={this.state.dataSource2}
-                    // defaultValue={username2}
-                    searchText={this.state.textFieldValue2}
-                    onUpdateInput={this.handleUpdateInput2}
-                    />
-             </ListItem>
-             </List>
-        </ Dialog>
+                <List>
+                    <ListItem
+                        disabled={true}
+                        leftAvatar={
+                            <Avatar src={this.state.avatar1} />
+                        }
+                        >
+                        <AutoComplete
+                            hintText="Type anything"
+                            dataSource={this.state.dataSource1}
+                            searchText={this.state.textFieldValue1}
+                            onUpdateInput={(value) => this.handleUpdateInput(value, 1)}
+                            onNewRequest={this.onNewRequest}
+                            />
+                    </ListItem>
+                    <ListItem
+                        disabled={true}
+                        leftAvatar={
+                            <Avatar src={this.state.avatar2} />
+                        }
+                        >
+                        <AutoComplete
+                            hintText="Username"
+                            dataSource={this.state.dataSource2}
+                            searchText={this.state.textFieldValue2}
+                            onUpdateInput={(value) => this.handleUpdateInput(value, 2)}
+                            onNewRequest={this.onNewRequest}
+                            
+                            />
+                        </ListItem>
+                    </List>
+                    <div style={buttonDivStyle}>
+                        {buttons}
+                    </ div>
+                    <AddedSnackbar open={this.state.snackBarOpen} />
+            </ Dialog>
         )
     }
 
