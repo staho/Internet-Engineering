@@ -1,7 +1,11 @@
 .grid {
     position: relative;
-    height: inherit;
+    height: inherit!important;
   }
+
+.content-height {
+  height: inherit;
+}
 .grid-scroller {
   height: calc(100vh - 120px);
 }

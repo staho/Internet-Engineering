@@ -3,9 +3,11 @@ import Muuri from 'muuri'
 import config from '../../config'
 import AddDuel from './addDuel/AddDuel'
 import EditDuel from './editDuel/EditDuel'
-import InfiniteScroll from 'react-infinite-scroll-component'
-
+// import InfiniteScroll from './index'
+import InfiniteScroll from 'react-infinite-scroller'
+import MyPackage from './MyPackage'
 import './Duels.css'
+import PropTypes from 'prop-types'
 // import DuelDialog from './duelDialog/DuelDialog';
 
 class Duels extends React.Component {
@@ -24,15 +26,16 @@ class Duels extends React.Component {
     }
 
     componentDidMount = () => {
+        // document.registerElement('package')
         let grid = new Muuri('.grid', {
             dragEnabled: true
         })
         console.log(this.refs)
         // console.log()
-        const height = this.refs["duels-container"].clientHeight
+        // const height = this.refs["duels-container"].clientHeight
         grid.on('add', items => items.forEach(item => item._element.onclick = event => this.onDuelClick(event.target.attributes.duelid.nodeValue)))
 
-        this.setState({grid: grid, contentHeight: height})
+        this.setState({grid: grid})
         this.getDuels()
     }
 
@@ -199,11 +202,14 @@ class Duels extends React.Component {
         // console.log(this.refs["duels-container"].clientHeight)
    
         return(
-            <div ref="duels-container" style={{height: "inherit"}}>
+            <div className="duels-container" style={{height: 'inherit'}}>
                 <InfiniteScroll 
-                    style={{height:"inherit"}}
-                    dataLength={itemCount} 
-                    height="inherit"
+                    // style={{height:"inherit"}}
+                    // dataLength={itemCount} 
+                    // height="inherit"
+                    // element="MyPackage"
+                    className="content-height"
+                    loadMore={()=>{}}
                     >
                     <div className="grid">
                     </div>
