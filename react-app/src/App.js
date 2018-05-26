@@ -78,7 +78,7 @@ class App extends Component {
     const recentsIcon = <Apps />
     const favoritesIcon = <Star />
     const nearbyIcon = <IconLocationOn />
-    let mainElem = <Duels user={this.state.user}/>
+    let mainElem = <Duels ref="duels" user={this.state.user}/>
     
     return (
 

@@ -18,7 +18,8 @@ class Duels extends React.Component {
             duels: [],
             usersResolved: [],
             showDialog: false,
-            choosenDuel: undefined
+            choosenDuel: undefined,
+            contentHeight: 0
         }
     }
 
@@ -26,10 +27,12 @@ class Duels extends React.Component {
         let grid = new Muuri('.grid', {
             dragEnabled: true
         })
-
+        console.log(this.refs)
+        // console.log()
+        const height = this.refs["duels-container"].clientHeight
         grid.on('add', items => items.forEach(item => item._element.onclick = event => this.onDuelClick(event.target.attributes.duelid.nodeValue)))
 
-        this.setState({grid: grid})
+        this.setState({grid: grid, contentHeight: height})
         this.getDuels()
     }
 
@@ -129,15 +132,23 @@ class Duels extends React.Component {
     }
 
     handleClose = () => {
-<<<<<<< HEAD
         this.setState({showDialog: false, choosenDuel: undefined})
-=======
-        this.setState({showDialog: false})
->>>>>>> origin/master
     }
 
     componentWillUnmount = () => {
         this.state.grid.destroy()
+    }
+    
+    handleAddSuccess = () => {
+
+    }
+
+    handleEditSuccess = () => {
+
+    }
+
+    refresh = () => {
+        console.log("refresh")
     }
 
     createItems = () => {
@@ -184,26 +195,25 @@ class Duels extends React.Component {
                 if(!found) this.state.grid.add(item)
             })
         }
-        // let duelDialog = <div />
 
-        // if(this.state.showDialog)
-        //  duelDialog = <DuelDialog key="standard-dialog"
-        //                         duel={this.state.choosenDuel}
-        //                         showDialog={this.state.showDialog} 
-        //                         handleClose={this.handleClose}/>
-
+        // console.log(this.refs["duels-container"].clientHeight)
+   
         return(
-            <div>
+            <div ref="duels-container" style={{height: "inherit"}}>
                 <InfiniteScroll 
-                    dataLength={itemCount}
+                    style={{height:"inherit"}}
+                    dataLength={itemCount} 
+                    height="inherit"
                     >
                     <div className="grid">
                     </div>
                 </InfiniteScroll>
-                <AddDuel user={this.props.user} />
+                <AddDuel user={this.props.user}
+                            onAddSuccess={this.handleAddSuccess}/>
                 <EditDuel duel={this.state.choosenDuel} 
                             open={this.state.showDialog}
-                            handleClose={this.handleClose}/>
+                            handleClose={this.handleClose}
+                            onEditSucces={this.handleEditSuccess}/>
                 
                 
             </div>

@@ -1,6 +1,10 @@
 .grid {
     position: relative;
+    height: inherit;
   }
+.grid-scroller {
+  height: calc(100vh - 120px);
+}
   .item {
     display: block;
     position: absolute;
