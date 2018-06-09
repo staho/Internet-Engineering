@@ -3,9 +3,11 @@ import Muuri from 'muuri'
 import config from '../../config'
 import AddDuel from './addDuel/AddDuel'
 import EditDuel from './editDuel/EditDuel'
-import InfiniteScroll from 'react-infinite-scroll-component'
-
+// import InfiniteScroll from './index'
+import InfiniteScroll from 'react-infinite-scroller'
+import MyPackage from './MyPackage'
 import './Duels.css'
+import PropTypes from 'prop-types'
 // import DuelDialog from './duelDialog/DuelDialog';
 
 class Duels extends React.Component {
@@ -24,15 +26,16 @@ class Duels extends React.Component {
     }
 
     componentDidMount = () => {
+        // document.registerElement('package')
         let grid = new Muuri('.grid', {
             dragEnabled: true
         })
         console.log(this.refs)
         // console.log()
-        const height = this.refs["duels-container"].clientHeight
+        // const height = this.refs["duels-container"].clientHeight
         grid.on('add', items => items.forEach(item => item._element.onclick = event => this.onDuelClick(event.target.attributes.duelid.nodeValue)))
 
-        this.setState({grid: grid, contentHeight: height})
+        this.setState({grid: grid})
         this.getDuels()
     }
 
@@ -164,14 +167,16 @@ class Duels extends React.Component {
             let username2 = this.state.usersResolved.find(elem => duel.user2 === elem.id).username
 
             let itemElem = document.createElement('div')
-            let itemTmp = '<div class="item" key="item-' + duel._id +'">' +
-                                '<div class="item-content">' +
-                                    '<div class="my-inside" duelId=' + duel._id + '>' +
-                                        'Duel: <br />'+
-                                        username1 + ' vs '+ username2 +
-                                    '</div>' +
-                                '</div>' +
-                            '</div>'
+            let itemTmp = `<div class="item" key="item-${duel._id}>
+                                <div class="item-content">
+                                    <div class="my-inside" duelId=${duel._id}>
+                                        Duel<br />
+                                        <div class="inside-vs">
+                                        ${username1}<br /><b>vs</b><br/>${username2}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`
             itemElem.innerHTML = itemTmp
 
             return itemElem.firstChild
@@ -182,7 +187,6 @@ class Duels extends React.Component {
     }
 
     render() { 
-        // console.log("render", this.state.showDialog)
         let itemCount = 0
         let items = this.createItems()
         if(this.state.grid && items[0]){
@@ -199,15 +203,12 @@ class Duels extends React.Component {
         // console.log(this.refs["duels-container"].clientHeight)
    
         return(
-            <div ref="duels-container" style={{height: "inherit"}}>
-                <InfiniteScroll 
-                    style={{height:"inherit"}}
-                    dataLength={itemCount} 
-                    height="inherit"
-                    >
-                    <div className="grid">
+            <div className="duels-container" style={{height: 'inherit'}}>
+               
+                    <div className="grid-container">
+                        <div className="grid">
+                        </div>
                     </div>
-                </InfiniteScroll>
                 <AddDuel user={this.props.user}
                             onAddSuccess={this.handleAddSuccess}/>
                 <EditDuel duel={this.state.choosenDuel} 
