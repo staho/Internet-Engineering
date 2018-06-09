@@ -185,7 +185,6 @@ class Duels extends React.Component {
     }
 
     render() { 
-        // console.log("render", this.state.showDialog)
         let itemCount = 0
         let items = this.createItems()
         if(this.state.grid && items[0]){
@@ -203,17 +202,11 @@ class Duels extends React.Component {
    
         return(
             <div className="duels-container" style={{height: 'inherit'}}>
-                <InfiniteScroll 
-                    // style={{height:"inherit"}}
-                    // dataLength={itemCount} 
-                    // height="inherit"
-                    // element="MyPackage"
-                    className="content-height"
-                    loadMore={()=>{}}
-                    >
-                    <div className="grid">
+               
+                    <div className="grid-container">
+                        <div className="grid">
+                        </div>
                     </div>
-                </InfiniteScroll>
                 <AddDuel user={this.props.user}
                             onAddSuccess={this.handleAddSuccess}/>
                 <EditDuel duel={this.state.choosenDuel} 
