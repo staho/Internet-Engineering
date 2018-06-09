@@ -167,14 +167,16 @@ class Duels extends React.Component {
             let username2 = this.state.usersResolved.find(elem => duel.user2 === elem.id).username
 
             let itemElem = document.createElement('div')
-            let itemTmp = '<div class="item" key="item-' + duel._id +'">' +
-                                '<div class="item-content">' +
-                                    '<div class="my-inside" duelId=' + duel._id + '>' +
-                                        'Duel: <br />'+
-                                        username1 + ' vs '+ username2 +
-                                    '</div>' +
-                                '</div>' +
-                            '</div>'
+            let itemTmp = `<div class="item" key="item-${duel._id}>
+                                <div class="item-content">
+                                    <div class="my-inside" duelId=${duel._id}>
+                                        Duel<br />
+                                        <div class="inside-vs">
+                                        ${username1}<br /><b>vs</b><br/>${username2}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`
             itemElem.innerHTML = itemTmp
 
             return itemElem.firstChild
