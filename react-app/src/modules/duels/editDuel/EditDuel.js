@@ -8,6 +8,8 @@ class EditDuel extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            userScore: "",
+            oponentScore: ""
             // dialogOpen: false
         }
 
@@ -20,6 +22,14 @@ class EditDuel extends React.Component {
     handleClose = () => {
         this.props.handleClose()
         // this.setState({dialogOpen: false})
+    }
+
+    handleUserInputChange = value => {
+        this.setState({userScore: value})
+    }
+
+    handleOponentInputChange = value => {
+        this.setState({oponentScore: value})
     }
 
     handleSaveClick = () => {
@@ -57,6 +67,10 @@ class EditDuel extends React.Component {
                     <DuelDialog duel={this.props.duel} 
                                 open={this.props.open}
                                 user={this.props.user}
+                                userScore={this.state.userScore}
+                                oponentScore={this.state.oponentScore}
+                                handleOponentInputChange = {this.handleOponentInputChange}
+                                handleUserInputChange = {this.handleUserInputChange}
                                 handleClose={this.handleClose}
                                 buttons={buttons}/> 
                     : <div />}

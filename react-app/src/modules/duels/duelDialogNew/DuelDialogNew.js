@@ -101,11 +101,16 @@ class DuelDialog extends React.Component {
                         <TextField 
                             floatingLabelText="Your score" 
                             style={{width: "45%", margin: 6}}
-                            value={scoreCurUser ? scoreCurUser : 0}/>
+                            value={scoreCurUser !== undefined ? scoreCurUser : this.props.userScore}
+                            onChange={this.props.handleUserInputChange}
+                            />
+                    
                         <TextField 
                             floatingLabelText="Oponent score" 
                             style={{width: "45%", margin: 6}}
-                            value={scoreSecUser ? scoreSecUser : 0}/>
+                            value={scoreSecUser !== undefined ? scoreSecUser : this.props.oponentScore}
+                            onChange={this.props.handleOponentInputChange}
+                            />
                     </ListItem> : <div/>}
                    
                 </List>
