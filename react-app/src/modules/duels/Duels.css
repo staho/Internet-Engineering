@@ -62,6 +62,24 @@
     font-family: "Roboto", "Helvetica", "Arial", "sans-serif";
   }
 
+  .inside-win {
+    color: goldenrod;
+    font-size: 1.5rem;
+    font-weight: 400;
+    font-family:  "Roboto", "Helvetica", "Arial", "sans-serif";
+    /* line-height: 1.35417em; */
+
+  }
+
+  .inside-lost {
+    color: red;
+    font-size: 1.5rem;
+    font-weight: 400;
+    font-family:  "Roboto", "Helvetica", "Arial", "sans-serif";
+    /* line-height: 1.35417em; */
+
+  }
+
   .grid-container {
     background-color: #eeeeee;
     height: inherit;

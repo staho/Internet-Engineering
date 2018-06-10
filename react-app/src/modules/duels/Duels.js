@@ -3,8 +3,6 @@ import Muuri from 'muuri'
 import config from '../../config'
 import AddDuel from './addDuel/AddDuel'
 import EditDuel from './editDuel/EditDuel'
-// import InfiniteScroll from './index'
-import InfiniteScroll from 'react-infinite-scroller'
 import MyPackage from './MyPackage'
 import './Duels.css'
 import PropTypes from 'prop-types'
@@ -155,25 +153,38 @@ class Duels extends React.Component {
     }
 
     createItems = () => {
-        let duels = this.state.duels
+        let duels = this.state.duels 
 
         if(!duels) return []
 
         let items = duels.map((duel, index) => {
 
             if(this.state.usersResolved.length < 2) return undefined
-
+            let win = `<div />`
+            if(duel.result) {
+                console.log(duel.result)
+                console.log(duel[duel.result.winner])
+                if(duel[duel.result.winner] === this.props.user._id) {
+                    console.log("Elo")
+                    win = `<div class="inside-win">Winner</div>`
+                } else {
+                    win = `<div class="inside-lost">Loser</div>`
+                }
+            }
             let username1 = this.state.usersResolved.find(elem => duel.user1 === elem.id).username
             let username2 = this.state.usersResolved.find(elem => duel.user2 === elem.id).username
+
+            
 
             let itemElem = document.createElement('div')
             let itemTmp = `<div class="item" key="item-${duel._id}>
                                 <div class="item-content">
                                     <div class="my-inside" duelId=${duel._id}>
                                         Duel<br />
-                                        <div class="inside-vs">
+                                        <div class="inside-vs" duelId=${duel._id}>
                                         ${username1}<br /><b>vs</b><br/>${username2}
                                         </div>
+                                        ${win}
                                     </div>
                                 </div>
                             </div>`
