@@ -133,7 +133,7 @@ class AddDuel extends React.Component {
             duelDialog = <DuelDialog 
                             key="add-dialog"
                             open={this.state.openDialog}
-                            newDuel={false}
+                            newDuel={true}
                             user={this.props.user} 
                             handleClose={this.handleClose}
                             versusUsername={this.state.versusUsername}

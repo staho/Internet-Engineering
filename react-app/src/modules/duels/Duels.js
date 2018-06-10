@@ -162,13 +162,10 @@ class Duels extends React.Component {
             if(this.state.usersResolved.length < 2) return undefined
             let win = `<div />`
             if(duel.result) {
-                console.log(duel.result)
-                console.log(duel[duel.result.winner])
                 if(duel[duel.result.winner] === this.props.user._id) {
-                    console.log("Elo")
-                    win = `<div class="inside-win">Winner</div>`
+                    win = `<div class="inside-win" duelId=${duel._id}>Winner</div>`
                 } else {
-                    win = `<div class="inside-lost">Loser</div>`
+                    win = `<div class="inside-lost" duelId=${duel._id}>Loser</div>`
                 }
             }
             let username1 = this.state.usersResolved.find(elem => duel.user1 === elem.id).username
@@ -182,7 +179,7 @@ class Duels extends React.Component {
                                     <div class="my-inside" duelId=${duel._id}>
                                         Duel<br />
                                         <div class="inside-vs" duelId=${duel._id}>
-                                        ${username1}<br /><b>vs</b><br/>${username2}
+                                        ${username1}<br /><b duelId=${duel._id}>vs</b><br/>${username2}
                                         </div>
                                         ${win}
                                     </div>
@@ -210,8 +207,6 @@ class Duels extends React.Component {
                 if(!found) this.state.grid.add(item)
             })
         }
-
-        // console.log(this.refs["duels-container"].clientHeight)
    
         return(
             <div className="duels-container" style={{height: 'inherit'}}>
@@ -223,6 +218,7 @@ class Duels extends React.Component {
                 <AddDuel user={this.props.user}
                             onAddSuccess={this.handleAddSuccess}/>
                 <EditDuel duel={this.state.choosenDuel} 
+                            user={this.props.user}
                             open={this.state.showDialog}
                             handleClose={this.handleClose}
                             onEditSucces={this.handleEditSuccess}/>

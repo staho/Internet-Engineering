@@ -9,6 +9,7 @@ import Avatar from 'material-ui/Avatar'
 import List from 'material-ui/List/List'
 import ListItem from 'material-ui/List/ListItem'
 
+
 class DuelDialog extends React.Component {
     constructor(props) {
         super(props)
@@ -27,6 +28,20 @@ class DuelDialog extends React.Component {
     }
 
     render = () => {
+        let scoreCurUser = undefined
+        let scoreSecUser = undefined
+        if(!this.props.newDuel && this.props.duel.result) {
+            if(this.props.user._id === this.props.duel.user1){
+                scoreCurUser = this.props.duel.result.score.user1
+                scoreSecUser = this.props.duel.result.score.user2
+            } else if (this.props.user._id === this.props.duel.user2){
+                scoreCurUser = this.props.duel.result.score.user2
+                scoreSecUser = this.props.duel.result.score.user1
+                
+
+            }
+        }
+
         let title = "New duel",
             avatar1 = "",
             avatar2 = "",
@@ -41,7 +56,6 @@ class DuelDialog extends React.Component {
             
         } else {
             avatar1 = `${config.getRoute("avatars")}/${this.props.user._id}.png`
-            // username1 = this.props.user.username
         }
 
         if(this.state.versusAvatar) avatar2 = this.state.versusAvatar
@@ -82,6 +96,18 @@ class DuelDialog extends React.Component {
                             onNewRequest={this.props.versusNewRequest? this.versusNewRequest: () => {}}
                             />
                     </ListItem>
+                    {!this.props.newDuel ? <ListItem
+                        disabled={true}>
+                        <TextField 
+                            floatingLabelText="Your score" 
+                            style={{width: "45%", margin: 6}}
+                            value={scoreCurUser ? scoreCurUser : 0}/>
+                        <TextField 
+                            floatingLabelText="Oponent score" 
+                            style={{width: "45%", margin: 6}}
+                            value={scoreSecUser ? scoreSecUser : 0}/>
+                    </ListItem> : <div/>}
+                   
                 </List>
                 {buttons}
             </ Dialog>
