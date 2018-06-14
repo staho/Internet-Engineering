@@ -10,15 +10,23 @@ let config = {
         users: "/users",
         userProfile: "/userProfile",
         newDuel: "/newDuel",
+        duel: "/duel",
 
         avatars: "/avatars"
         
     },
 
+    websocket: "ws://localhost:3000",
+
     getRoute: property => {
         if(config.routes.hasOwnProperty(property))
             return config.apiUrl + config.routes[property]
         return "Unrecognised route"
+    },
+
+    getWsRoute: () => {
+        
+        return config.websocket
     }
 }
 

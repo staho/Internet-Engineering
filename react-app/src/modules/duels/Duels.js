@@ -35,6 +35,17 @@ class Duels extends React.Component {
 
         this.setState({grid: grid})
         this.getDuels()
+
+        this.props.websocket.onmessage = this.handleWsRefresh
+    }
+
+    handleWsRefresh = data => {
+       let newData = JSON.parse(data.data)
+        if(newData.refresh){
+
+            this.getDuels()            
+        }
+        
     }
 
     getDuels = () => {
@@ -145,7 +156,10 @@ class Duels extends React.Component {
     }
 
     handleEditSuccess = () => {
-
+        console.log("edit success")
+        this.props.websocket.send(JSON.stringify({
+            type: 'update'
+        }))
     }
 
     refresh = () => {
@@ -195,6 +209,7 @@ class Duels extends React.Component {
     }
 
     render() { 
+        console.log("wtf")
         let itemCount = 0
         let items = this.createItems()
         if(this.state.grid && items[0]){
@@ -221,7 +236,7 @@ class Duels extends React.Component {
                             user={this.props.user}
                             open={this.state.showDialog}
                             handleClose={this.handleClose}
-                            onEditSucces={this.handleEditSuccess}/>
+                            onEditSuccess={this.handleEditSuccess}/>
                 
                 
             </div>

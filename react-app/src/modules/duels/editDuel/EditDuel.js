@@ -2,6 +2,7 @@ import React from "react"
 import PropTypes from 'prop-types'
 import DuelDialog from '../duelDialogNew/DuelDialogNew'
 import RaisedButton from 'material-ui/RaisedButton'
+import config from '../../../config'
 
 
 class EditDuel extends React.Component {
@@ -15,24 +16,56 @@ class EditDuel extends React.Component {
 
     }
 
-    // handleOpen = () => {
-    //     this.setState({dialogOpen: true})
-    // }
-
     handleClose = () => {
         this.props.handleClose()
         // this.setState({dialogOpen: false})
     }
 
-    handleUserInputChange = value => {
-        this.setState({userScore: value})
+    handleUserInputChange = event => {
+        event.preventDefault()
+        this.setState({userScore: event.target.value})
     }
 
-    handleOponentInputChange = value => {
-        this.setState({oponentScore: value})
+    handleOponentInputChange = event => {
+        event.preventDefault()
+        
+        this.setState({oponentScore: event.target.value})
     }
 
     handleSaveClick = () => {
+
+        let score = {
+            user1: null,
+            user2: null
+        }
+
+        if(this.props.user._id === this.props.duel.user1) {
+            score.user1 = parseInt(this.state.userScore)
+            score.user2 = parseInt(this.state.oponentScore)
+        } else if (this.props.user._id === this.props.duel.user2) {
+            score.user2 = parseInt(this.state.userScore)
+            score.user1 = parseInt(this.state.oponentScore)
+        }
+
+        let content = JSON.stringify({
+            _id: this.props.duel._id,
+            result: {score: score}
+        })
+
+        fetch(config.getRoute("duel"), {
+            method: "PUT",
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("token"),
+                "Content-Type": "application/json"
+            },
+            body: content
+        }).then(response => {
+            this.props.onEditSuccess()
+            console.log(response)
+        }).catch(error => {
+            console.error(error)
+        })
+
 
     }
 
@@ -79,8 +112,8 @@ class EditDuel extends React.Component {
     }
 }
 
-EditDuel.propTypes = {
-    duel: PropTypes.object.isRequired
-}
+// EditDuel.propTypes = {
+//     duel: PropTypes.object.isRequired
+// }
 
 export default EditDuel

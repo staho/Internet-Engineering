@@ -19,6 +19,7 @@ import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import Star from 'material-ui/svg-icons/action/stars'
 import config from './config'
 import Duels from './modules/duels/Duels';
+import Websocket from 'react-websocket'
 
 class App extends Component {
   constructor(props){ 
@@ -27,7 +28,8 @@ class App extends Component {
     this.state = {
       logged: false,
       selectedIndex: 0,
-      user: {}
+      user: {},
+      websocket: new WebSocket(config.getWsRoute())
     }
 
   }
@@ -37,6 +39,7 @@ class App extends Component {
       this.isTokenValid()
     }
   }
+
 
   changeLoggedState = (logged, username) => {
     this.setState({logged: logged, user: {username: username}})
@@ -74,17 +77,19 @@ class App extends Component {
 
   select = index => this.setState({selectedIndex: index})
 
+  handleWs = data => console.log(data)
+
   render() {
     const recentsIcon = <Apps />
     const favoritesIcon = <Star />
     const nearbyIcon = <IconLocationOn />
-    let mainElem = <Duels ref="duels" user={this.state.user}/>
+    let mainElem = <Duels ref="duels" user={this.state.user} websocket={this.state.websocket}/>
     
     return (
 
-
-
       <div className="App">
+
+      
         <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
           <AppBar title="PingPong Tournaments"
                   iconElementLeft={<IconButton><NavigationClose /></IconButton>}

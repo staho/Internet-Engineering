@@ -1,6 +1,6 @@
 'use strict'
 
-module.exports = (app, authenticate) => {
+module.exports = (app, authenticate, wss) => {
     let duelController = require('../controller/duelController')
 
     app.route('/newDuel')

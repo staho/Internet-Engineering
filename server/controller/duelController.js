@@ -61,6 +61,7 @@ exports.updateDuel = (req, res) => {
     if(updatedDuel.result && updatedDuel.result.score) {
         let score = updatedDuel.result.score
         if(score.hasOwnProperty('user1') && score.hasOwnProperty('user2')){
+
             if(score.user1 + score.user2 > 3) {
                 res.status(400).send({error: "Score sum is above 3"})
                 return
@@ -85,6 +86,7 @@ exports.updateDuel = (req, res) => {
         if(err || !duel) {
             res.status(400).send("ERROR")
         } else {
+
             res.json(duel)
         }
         console.log(duel)
