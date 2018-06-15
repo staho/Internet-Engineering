@@ -43,7 +43,8 @@ class Duels extends React.Component {
        let newData = JSON.parse(data.data)
         if(newData.refresh){
 
-            this.getDuels()            
+
+            this.refresh()         
         }
         
     }
@@ -163,6 +164,18 @@ class Duels extends React.Component {
     }
 
     refresh = () => {
+        this.state.grid.remove(this.state.grid.getItems())
+        this.state.grid.destroy()
+
+        let grid = new Muuri('.grid', {
+            dragEnabled: true
+        })
+
+        grid.on('add', items => items.forEach(item => item._element.onclick = event => this.onDuelClick(event.target.attributes.duelid.nodeValue)))
+
+        this.setState({grid: grid})
+        this.getDuels()
+
         console.log("refresh")
     }
 
